@@ -9,7 +9,7 @@ class AccountService {
     }
 
     suspend fun login(userName: String, password: String): Boolean {
-        val second = (1..4).shuffled()[0]
+        val second = (2..4).shuffled()[0]
         delay(second * 1000L)
         return userName == FAKE_USER_NAME && password == FAKE_PASSWORD
     }

@@ -16,8 +16,8 @@ fun ScreenMain(accountViewModel: AccountViewModel) {
             LoginPage(navController = navController, accountViewModel = accountViewModel)
         }
 
-        composable(route = Routes.HomePage.route) {
-
+        composable(route = Routes.Home.route) {
+            Home()
         }
     }
 }

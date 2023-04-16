@@ -6,12 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.compose.rememberNavController
 import com.example.mycomposelearn.model.AccountService
 import com.example.mycomposelearn.ui.theme.MyComposeLearnTheme
 import com.example.mycomposelearn.view.screen.ScreenMain
