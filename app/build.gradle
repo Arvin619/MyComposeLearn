@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "org.jetbrains.kotlin.kapt"
 }
 
 android {
@@ -79,4 +80,9 @@ dependencies {
     // livedata
     implementation "androidx.lifecycle:lifecycle-livedata:2.6.1"
     implementation "androidx.compose.runtime:runtime-livedata:1.4.1"
+
+    // dagger
+    def dagger_version = "2.45"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 }
