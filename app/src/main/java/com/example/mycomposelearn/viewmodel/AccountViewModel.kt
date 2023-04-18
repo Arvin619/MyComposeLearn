@@ -1,15 +1,17 @@
 package com.example.mycomposelearn.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mycomposelearn.model.AccountService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 
-class AccountViewModel(private val accountService: AccountService) : ViewModel() {
+class AccountViewModel(application: Application, private val accountService: AccountService) :
+    AndroidViewModel(application) {
     private val inputUserName = MutableLiveData("")
     val inputUserNameData: LiveData<String>
         get() = inputUserName
