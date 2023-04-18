@@ -1,8 +1,11 @@
 package com.example.mycomposelearn.model
 
 import kotlinx.coroutines.delay
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AccountService {
+@Singleton
+class AccountService @Inject constructor() {
     companion object {
         const val FAKE_USER_NAME = "abc"
         const val FAKE_PASSWORD = "123"

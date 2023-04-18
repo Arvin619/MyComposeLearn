@@ -8,19 +8,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
-import com.example.mycomposelearn.model.AccountService
 import com.example.mycomposelearn.ui.theme.MyComposeLearnTheme
 import com.example.mycomposelearn.view.screen.ScreenMain
 import com.example.mycomposelearn.viewmodel.AccountViewModel
 import com.example.mycomposelearn.viewmodel.AccountViewModelFactory
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var accountViewModelFactory: AccountViewModelFactory
     private lateinit var accountViewModel: AccountViewModel
-    private val accountService = AccountService()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val accountFactory = AccountViewModelFactory(accountService)
-        accountViewModel = ViewModelProvider(this, accountFactory)[AccountViewModel::class.java]
+
+        (application as MyComposeLearnApplication).accountComponent.inject(this)
+
+        accountViewModel = ViewModelProvider(this, accountViewModelFactory)[AccountViewModel::class.java]
+
         setContent {
             MyComposeLearnTheme {
                 // A surface container using the 'background' color from the theme

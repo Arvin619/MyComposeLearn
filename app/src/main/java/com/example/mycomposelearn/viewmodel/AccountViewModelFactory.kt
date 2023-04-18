@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.mycomposelearn.model.AccountService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class AccountViewModelFactory(private val application: Application, private val accountService: AccountService) :
+@Singleton
+class AccountViewModelFactory @Inject constructor(private val application: Application, private val accountService: AccountService) :
     ViewModelProvider.AndroidViewModelFactory(application) {
 
     @Suppress("UNCHECKED_CAST")
