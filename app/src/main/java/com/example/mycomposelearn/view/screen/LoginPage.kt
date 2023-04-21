@@ -17,7 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -40,10 +40,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) {
 
-    val inputUserName = accountViewModel.inputUserNameData.observeAsState()
-    val inputPassword = accountViewModel.inputPasswordData.observeAsState()
-    val canButtonEnable = accountViewModel.canLoginButtonEnableData.observeAsState()
-    val lastTimeLoginIsFail = accountViewModel.lastTimeLoginIsFailData.observeAsState()
+    val inputUserName = accountViewModel.inputUserNameData.collectAsState()
+    val inputPassword = accountViewModel.inputPasswordData.collectAsState()
+    val canButtonEnable = accountViewModel.canLoginButtonEnableData.collectAsState()
+    val lastTimeLoginIsFail = accountViewModel.lastTimeLoginIsFailData.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
     val isLoading = remember { mutableStateOf(false) }
@@ -73,14 +73,14 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
             TextField(
                 label = { Text(text = "UserName") },
                 placeholder = { Text(text = "What is your username") },
-                value = inputUserName.value ?: "",
+                value = inputUserName.value,
                 onValueChange = { accountViewModel.setInputUserName(it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 label = { Text(text = "Password") },
                 placeholder = { Text(text = "What is your password") },
-                value = inputPassword.value ?: "",
+                value = inputPassword.value,
                 onValueChange = { accountViewModel.setInputPassword(it) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -102,13 +102,13 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                             }
                         }
                     },
-                    enabled = canButtonEnable.value ?: false,
+                    enabled = canButtonEnable.value,
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onBackground)
                 ) {
                     Text(text = "Login", color = MaterialTheme.colorScheme.background)
                 }
             }
-            if (lastTimeLoginIsFail.value!!) {
+            if (lastTimeLoginIsFail.value) {
                 Box(modifier = Modifier.padding(40.dp, 10.dp, 40.dp, 0.dp)) {
                     Text(
                         text = "帳號密碼錯誤",
