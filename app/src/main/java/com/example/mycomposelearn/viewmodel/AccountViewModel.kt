@@ -13,17 +13,17 @@ import kotlinx.coroutines.launch
 
 class AccountViewModel(application: Application, private val accountService: AccountService) :
     AndroidViewModel(application) {
-    private val inputUserName = MutableStateFlow("")
-    val inputUserNameData: StateFlow<String>
-        get() = inputUserName
+    private val _username = MutableStateFlow("")
+    val username: StateFlow<String>
+        get() = _username
 
-    private val inputPassword = MutableStateFlow("")
-    val inputPasswordData: StateFlow<String>
-        get() = inputPassword
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String>
+        get() = _password
 
-    private val canLoginButtonEnable = MutableStateFlow(false)
-    val canLoginButtonEnableData: StateFlow<Boolean>
-        get() = canLoginButtonEnable
+    private val _canLogin = MutableStateFlow(false)
+    val canLogin: StateFlow<Boolean>
+        get() = _canLogin
 
     private val lastTimeLoginIsFail = MutableStateFlow(false)
     val lastTimeLoginIsFailData: StateFlow<Boolean>
@@ -31,40 +31,40 @@ class AccountViewModel(application: Application, private val accountService: Acc
 
     init {
         viewModelScope.launch {
-            combine(inputUserNameData, inputPasswordData) { userName, password ->
+            combine(username, password) { userName, password ->
                 userName+password
             }.collect {
-                canLoginButtonEnable.value = checkUserName() && checkPassword()
+                _canLogin.value = checkUserName() && checkPassword()
                 lastTimeLoginIsFail.value = false
             }
         }
     }
 
-    fun setInputUserName(newUserName: String) {
-        inputUserName.value = newUserName
+    fun updateUsername(newUsername: String) {
+        _username.value = newUsername
     }
 
-    fun setInputPassword(newPassword: String) {
-        inputPassword.value = newPassword
+    fun updatePassword(newPassword: String) {
+        _password.value = newPassword
     }
 
     private fun checkUserName(): Boolean {
-        return inputUserName.value.isNotEmpty()
+        return _username.value.isNotEmpty()
     }
 
     private fun checkPassword(): Boolean {
-        return inputPassword.value.isNotEmpty()
+        return _password.value.isNotEmpty()
     }
 
     suspend fun login(): Boolean {
         val result = viewModelScope.async(Dispatchers.IO) {
-            if (inputUserName.value.isEmpty() || inputPassword.value.isEmpty()) {
+            if (_username.value.isEmpty() || _password.value.isEmpty()) {
                 return@async false
             }
-            return@async accountService.login(inputUserName.value, inputPassword.value)
+            return@async accountService.login(_username.value, _password.value)
         }.await()
 
-        inputPassword.value = ""
+        _password.value = ""
         if (!result) {
             lastTimeLoginIsFail.value = true
         }
