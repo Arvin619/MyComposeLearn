@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mycomposelearn.model.AccountService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +12,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class AccountViewModel(application: Application, private val accountService: AccountService) :
+@HiltViewModel
+class AccountViewModel @Inject constructor(application: Application, private val accountService: AccountService) :
     AndroidViewModel(application) {
     private val _username = MutableStateFlow("")
     val username: StateFlow<String>
