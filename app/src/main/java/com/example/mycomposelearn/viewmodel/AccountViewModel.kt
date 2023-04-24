@@ -7,11 +7,17 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mycomposelearn.model.AccountService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import javax.inject.Inject
 
-class AccountViewModel(application: Application, private val accountService: AccountService) :
-    AndroidViewModel(application) {
+@HiltViewModel
+class AccountViewModel @Inject constructor(
+    application: Application,
+    private val accountService: AccountService
+) : AndroidViewModel(application) {
+
     private val _username = MutableLiveData("")
     val username: LiveData<String>
         get() = _username
@@ -44,8 +50,6 @@ class AccountViewModel(application: Application, private val accountService: Acc
         _lastLoginIsFailed.addSource(_password) {
             _lastLoginIsFailed.value = false
         }
-
-
     }
 
     fun updateUsername(newUsername: String) {
