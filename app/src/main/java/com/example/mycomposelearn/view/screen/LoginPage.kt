@@ -40,10 +40,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) {
 
-    val inputUserName = accountViewModel.inputUserNameData.observeAsState()
-    val inputPassword = accountViewModel.inputPasswordData.observeAsState()
-    val canButtonEnable = accountViewModel.canLoginButtonEnableData.observeAsState()
-    val lastTimeLoginIsFail = accountViewModel.lastTimeLoginIsFailData.observeAsState()
+    val inputUserName = accountViewModel.username.observeAsState()
+    val inputPassword = accountViewModel.password.observeAsState()
+    val canButtonEnable = accountViewModel.canLogin.observeAsState()
+    val lastTimeLoginIsFail = accountViewModel.lastLoginIsFailed.observeAsState()
     val coroutineScope = rememberCoroutineScope()
 
     val isLoading = remember { mutableStateOf(false) }
@@ -74,7 +74,7 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                 label = { Text(text = "UserName") },
                 placeholder = { Text(text = "What is your username") },
                 value = inputUserName.value ?: "",
-                onValueChange = { accountViewModel.updateUserName(it) }
+                onValueChange = { accountViewModel.updateUsername(it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
             TextField(

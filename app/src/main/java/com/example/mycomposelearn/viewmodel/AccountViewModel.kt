@@ -12,69 +12,69 @@ import kotlinx.coroutines.async
 
 class AccountViewModel(application: Application, private val accountService: AccountService) :
     AndroidViewModel(application) {
-    private val inputUserName = MutableLiveData("")
-    val inputUserNameData: LiveData<String>
-        get() = inputUserName
+    private val _username = MutableLiveData("")
+    val username: LiveData<String>
+        get() = _username
 
-    private val inputPassword = MutableLiveData("")
-    val inputPasswordData: LiveData<String>
-        get() = inputPassword
+    private val _password = MutableLiveData("")
+    val password: LiveData<String>
+        get() = _password
 
-    private val canLoginButtonEnable = MediatorLiveData(false)
-    val canLoginButtonEnableData: LiveData<Boolean>
-        get() = canLoginButtonEnable
+    private val _canLogin = MediatorLiveData(false)
+    val canLogin: LiveData<Boolean>
+        get() = _canLogin
 
-    private val lastTimeLoginIsFail = MediatorLiveData(false)
-    val lastTimeLoginIsFailData: LiveData<Boolean>
-        get() = lastTimeLoginIsFail
+    private val _lastLoginIsFailed = MediatorLiveData(false)
+    val lastLoginIsFailed: LiveData<Boolean>
+        get() = _lastLoginIsFailed
 
     init {
-        canLoginButtonEnable.addSource(inputUserName) {
-            canLoginButtonEnable.value = checkUserName() && checkPassword()
+        _canLogin.addSource(_username) {
+            _canLogin.value = checkUsername() && checkPassword()
         }
 
-        canLoginButtonEnable.addSource(inputPassword) {
-            canLoginButtonEnable.value = checkUserName() && checkPassword()
+        _canLogin.addSource(_password) {
+            _canLogin.value = checkUsername() && checkPassword()
         }
 
-        lastTimeLoginIsFail.addSource(inputUserName) {
-            lastTimeLoginIsFail.value = false
+        _lastLoginIsFailed.addSource(_username) {
+            _lastLoginIsFailed.value = false
         }
 
-        lastTimeLoginIsFail.addSource(inputPassword) {
-            lastTimeLoginIsFail.value = false
+        _lastLoginIsFailed.addSource(_password) {
+            _lastLoginIsFailed.value = false
         }
 
 
     }
 
-    fun updateUserName(newUserName: String) {
-        inputUserName.value = newUserName
+    fun updateUsername(newUsername: String) {
+        _username.value = newUsername
     }
 
     fun updatePassword(newPassword: String) {
-        inputPassword.value = newPassword
+        _password.value = newPassword
     }
 
-    private fun checkUserName(): Boolean {
-        return !inputUserName.value.isNullOrEmpty()
+    private fun checkUsername(): Boolean {
+        return !_username.value.isNullOrEmpty()
     }
 
     private fun checkPassword(): Boolean {
-        return !inputPassword.value.isNullOrEmpty()
+        return !_password.value.isNullOrEmpty()
     }
 
     suspend fun login(): Boolean {
         val result = viewModelScope.async(Dispatchers.IO) {
-            if (inputUserName.value.isNullOrEmpty() || inputPassword.value.isNullOrEmpty()) {
+            if (_username.value.isNullOrEmpty() || _password.value.isNullOrEmpty()) {
                 return@async false
             }
-            return@async accountService.login(inputUserName.value!!, inputPassword.value!!)
+            return@async accountService.login(_username.value!!, _password.value!!)
         }.await()
 
-        inputPassword.value = ""
+        _password.value = ""
         if (!result) {
-            lastTimeLoginIsFail.value = true
+            _lastLoginIsFailed.value = true
         }
 
         return result
