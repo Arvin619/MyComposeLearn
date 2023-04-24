@@ -25,17 +25,12 @@ class AccountViewModel(application: Application, private val accountService: Acc
     val canLogin: StateFlow<Boolean>
         get() = _canLogin
 
-    private val lastTimeLoginIsFail = MutableStateFlow(false)
-    val lastTimeLoginIsFailData: StateFlow<Boolean>
-        get() = lastTimeLoginIsFail
-
     init {
         viewModelScope.launch {
             combine(username, password) { userName, password ->
                 userName+password
             }.collect {
                 _canLogin.value = checkUserName() && checkPassword()
-                lastTimeLoginIsFail.value = false
             }
         }
     }
@@ -65,10 +60,6 @@ class AccountViewModel(application: Application, private val accountService: Acc
         }.await()
 
         _password.value = ""
-        if (!result) {
-            lastTimeLoginIsFail.value = true
-        }
-
         return result
     }
 }

@@ -43,7 +43,9 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
     val inputUserName = accountViewModel.username.collectAsState()
     val inputPassword = accountViewModel.password.collectAsState()
     val canButtonEnable = accountViewModel.canLogin.collectAsState()
-    val lastTimeLoginIsFail = accountViewModel.lastTimeLoginIsFailData.collectAsState()
+
+    val lastTimeLoginIsFail = remember { mutableStateOf(false) }
+
     val coroutineScope = rememberCoroutineScope()
 
     val isLoading = remember { mutableStateOf(false) }
@@ -74,14 +76,20 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                 label = { Text(text = "UserName") },
                 placeholder = { Text(text = "What is your username") },
                 value = inputUserName.value,
-                onValueChange = { accountViewModel.updateUsername(it) }
+                onValueChange = {
+                    accountViewModel.updateUsername(it)
+                    lastTimeLoginIsFail.value = false
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 label = { Text(text = "Password") },
                 placeholder = { Text(text = "What is your password") },
                 value = inputPassword.value,
-                onValueChange = { accountViewModel.updatePassword(it) },
+                onValueChange = {
+                    accountViewModel.updatePassword(it)
+                    lastTimeLoginIsFail.value = false
+                },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
@@ -98,6 +106,7 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                             if (isSuccess) {
                                 navController.navigate(Routes.Home.route)
                             } else {
+                                lastTimeLoginIsFail.value = true
                                 isLoading.value = false
                             }
                         }
