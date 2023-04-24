@@ -7,9 +7,10 @@ import com.example.mycomposelearn.model.AccountService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 
 class AccountViewModel(application: Application, private val accountService: AccountService) :
     AndroidViewModel(application) {
@@ -21,19 +22,10 @@ class AccountViewModel(application: Application, private val accountService: Acc
     val password: StateFlow<String>
         get() = _password
 
-    private val _canLogin = MutableStateFlow(false)
-    val canLogin: StateFlow<Boolean>
-        get() = _canLogin
+    val canLogin = _username.combine(_password) { _, _ ->
+        checkUserName() && checkPassword()
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    init {
-        viewModelScope.launch {
-            combine(username, password) { userName, password ->
-                userName+password
-            }.collect {
-                _canLogin.value = checkUserName() && checkPassword()
-            }
-        }
-    }
 
     fun updateUsername(newUsername: String) {
         _username.value = newUsername
