@@ -74,14 +74,14 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                 label = { Text(text = "UserName") },
                 placeholder = { Text(text = "What is your username") },
                 value = inputUserName.value ?: "",
-                onValueChange = { accountViewModel.setInputUserName(it) }
+                onValueChange = { accountViewModel.updateUserName(it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 label = { Text(text = "Password") },
                 placeholder = { Text(text = "What is your password") },
                 value = inputPassword.value ?: "",
-                onValueChange = { accountViewModel.setInputPassword(it) },
+                onValueChange = { accountViewModel.updatePassword(it) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )

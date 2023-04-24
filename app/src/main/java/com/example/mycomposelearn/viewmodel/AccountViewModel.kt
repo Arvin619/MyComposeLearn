@@ -48,11 +48,11 @@ class AccountViewModel(application: Application, private val accountService: Acc
 
     }
 
-    fun setInputUserName(newUserName: String) {
+    fun updateUserName(newUserName: String) {
         inputUserName.value = newUserName
     }
 
-    fun setInputPassword(newPassword: String) {
+    fun updatePassword(newPassword: String) {
         inputPassword.value = newPassword
     }
 
