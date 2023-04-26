@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UseCaseLoginImpl @Inject constructor(private val repository: UserRepository): UseCaseLogin {
-    override fun execute(name: String, password: String, f: Flow<Int>): Flow<Result<User>> {
+    override fun execute(name: String, password: String): Flow<Result<User>> {
         return repository.login(name, password)
     }
 }

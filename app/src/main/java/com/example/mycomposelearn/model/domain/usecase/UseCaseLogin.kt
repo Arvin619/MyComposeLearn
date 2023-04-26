@@ -5,5 +5,5 @@ import com.example.mycomposelearn.model.data.local.entity.User
 import kotlinx.coroutines.flow.Flow
 
 interface UseCaseLogin {
-    fun execute(name: String, password: String, f: Flow<Int>): Flow<Result<User>>
+    fun execute(name: String, password: String): Flow<Result<User>>
 }
