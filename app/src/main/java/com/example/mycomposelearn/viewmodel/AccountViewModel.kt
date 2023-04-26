@@ -3,19 +3,20 @@ package com.example.mycomposelearn.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mycomposelearn.model.AccountService
+import com.example.mycomposelearn.model.domain.usecase.UseCaseLogin
+import com.example.mycomposelearn.model.domain.usecase.UseCaseRegister
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor(application: Application, private val accountService: AccountService) :
+class AccountViewModel @Inject constructor(application: Application, private val useCaseLogin: UseCaseLogin, private val useCaseRegister: UseCaseRegister) :
     AndroidViewModel(application) {
     private val _username = MutableStateFlow("")
     val username: StateFlow<String>
@@ -46,15 +47,12 @@ class AccountViewModel @Inject constructor(application: Application, private val
         return _password.value.isNotEmpty()
     }
 
-    suspend fun login(): Boolean {
-        val result = viewModelScope.async(Dispatchers.IO) {
-            if (_username.value.isEmpty() || _password.value.isEmpty()) {
-                return@async false
-            }
-            return@async accountService.login(_username.value, _password.value)
-        }.await()
+    fun login(): Boolean {
+        val result = false
+        viewModelScope.launch(Dispatchers.IO) {
 
-        _password.value = ""
+        }
+//        _password.value = ""
         return result
     }
 }
