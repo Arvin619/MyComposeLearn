@@ -32,17 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mycomposelearn.view.Routes
-import com.example.mycomposelearn.viewmodel.AccountViewModel
+import com.example.mycomposelearn.viewmodel.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) {
+fun LoginPage(navController: NavController, loginViewModel: LoginViewModel) {
 
-    val inputUserName = accountViewModel.username.collectAsState()
-    val inputPassword = accountViewModel.password.collectAsState()
-    val canButtonEnable = accountViewModel.canLogin.collectAsState()
+    val inputUserName = loginViewModel.username.collectAsState()
+    val inputPassword = loginViewModel.password.collectAsState()
+    val canButtonEnable = loginViewModel.canLogin.collectAsState()
 
     val lastTimeLoginIsFail = remember { mutableStateOf(false) }
 
@@ -77,7 +77,7 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                 placeholder = { Text(text = "What is your username") },
                 value = inputUserName.value,
                 onValueChange = {
-                    accountViewModel.updateUsername(it)
+                    loginViewModel.updateUsername(it)
                     lastTimeLoginIsFail.value = false
                 }
             )
@@ -87,7 +87,7 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                 placeholder = { Text(text = "What is your password") },
                 value = inputPassword.value,
                 onValueChange = {
-                    accountViewModel.updatePassword(it)
+                    loginViewModel.updatePassword(it)
                     lastTimeLoginIsFail.value = false
                 },
                 visualTransformation = PasswordVisualTransformation(),
@@ -102,7 +102,7 @@ fun LoginPage(navController: NavController, accountViewModel: AccountViewModel) 
                     onClick = {
                         isLoading.value = true
                         coroutineScope.launch(Dispatchers.Main) {
-                            val isSuccess: Boolean = accountViewModel.login()
+                            val isSuccess: Boolean = loginViewModel.login()
                             if (isSuccess) {
                                 navController.navigate(Routes.Home.route)
                             } else {

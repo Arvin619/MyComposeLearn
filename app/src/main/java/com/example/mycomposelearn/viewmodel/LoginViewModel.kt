@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor(application: Application, private val useCaseLogin: UseCaseLogin, private val useCaseRegister: UseCaseRegister) :
+class LoginViewModel @Inject constructor(application: Application, private val useCaseLogin: UseCaseLogin, private val useCaseRegister: UseCaseRegister) :
     AndroidViewModel(application) {
     private val _username = MutableStateFlow("")
     val username: StateFlow<String>

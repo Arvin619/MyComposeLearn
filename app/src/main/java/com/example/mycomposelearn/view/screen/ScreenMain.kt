@@ -6,16 +6,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mycomposelearn.view.Routes
-import com.example.mycomposelearn.viewmodel.AccountViewModel
+import com.example.mycomposelearn.viewmodel.LoginViewModel
 
 @Composable
 fun ScreenMain() {
     val navController = rememberNavController()
-    val accountViewModel = hiltViewModel<AccountViewModel>()
+    val loginViewModel = hiltViewModel<LoginViewModel>()
 
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(route = Routes.Login.route) {
-            LoginPage(navController = navController, accountViewModel = accountViewModel)
+            LoginPage(navController = navController, loginViewModel = loginViewModel)
         }
 
         composable(route = Routes.Home.route) {
