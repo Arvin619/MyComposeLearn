@@ -11,11 +11,10 @@ import com.example.mycomposelearn.viewmodel.LoginViewModel
 @Composable
 fun ScreenMain() {
     val navController = rememberNavController()
-    val loginViewModel = hiltViewModel<LoginViewModel>()
 
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(route = Routes.Login.route) {
-            LoginPage(navController = navController, loginViewModel = loginViewModel)
+            LoginPage(navController = navController, loginViewModel = hiltViewModel())
         }
 
         composable(route = Routes.Home.route) {
