@@ -22,14 +22,12 @@ class LoginViewModel @Inject constructor(application: Application, private val u
     private val _status: MutableStateFlow<Result<User>> = MutableStateFlow(Result.Init)
     val status: StateFlow<Result<User>> = _status
 
-    fun login(name: String, password: String): Boolean {
-        val result = false
+    fun login(name: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             useCaseLogin.execute(name, password).collect {
                 Log.i("Arvin-log", "$it")
                 _status.value = it
             }
         }
-        return result
     }
 }
